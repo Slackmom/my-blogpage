@@ -48,7 +48,7 @@ export default function RootLayout({
         h-full antialiased
       `}
     >
-      <body className="min-h-full flex flex-col bg-[#06060f] text-[#F8FAFC]">
+      <body className="min-h-full flex flex-col bg-[#06060f] text-[#F8FAFC]" suppressHydrationWarning>
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />

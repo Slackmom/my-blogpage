@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { getAll } from "@/lib/content";
+import { getCategoryStyle, formatDate } from "@/lib/styles";
+import type { MentoringStory } from "@/lib/types";
 import { Sparkle } from "../components/Sparkle";
 
 export const metadata = {
@@ -11,7 +14,7 @@ const values = [
   {
     icon: "✦",
     title: "Real over polished.",
-    body: "I don&apos;t do mentoring theater. I care about honest conversations, not advice that sounds good in a LinkedIn post.",
+    body: "I don't do mentoring theater. I care about honest conversations, not advice that sounds good in a LinkedIn post.",
   },
   {
     icon: "♟",
@@ -26,6 +29,8 @@ const values = [
 ];
 
 export default function MentoringPage() {
+  const stories = getAll<MentoringStory>("mentoring");
+
   return (
     <div className="min-h-screen pt-20">
 
@@ -48,10 +53,10 @@ export default function MentoringPage() {
             <span className="text-[10px] tracking-[0.22em] uppercase font-medium">Mentoring · Women in Tech</span>
           </div>
           <h1
-            className="text-5xl md:text-7xl font-bold text-[#F8FAFC] mb-5 leading-tight"
+            className="text-4xl md:text-7xl font-bold text-[#F8FAFC] mb-5 leading-tight"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
-            Building the table<br />
+            Building the table{" "}
             <span style={{
               background: "linear-gradient(135deg, #D946EF 0%, #F472B6 50%, #9B6EFF 100%)",
               WebkitBackgroundClip: "text",
@@ -59,7 +64,7 @@ export default function MentoringPage() {
               backgroundClip: "text",
             }}>
               we all deserved
-            </span><br />
+            </span>{" "}
             sooner.
           </h1>
           <p className="max-w-xl text-[#636876] text-lg leading-relaxed">
@@ -70,31 +75,54 @@ export default function MentoringPage() {
         </div>
       </div>
 
-      {/* ── Coming soon notice ───────────────────────────────────── */}
-      <div className="max-w-5xl mx-auto px-6 md:px-12 py-16">
-        <div className="relative rounded-2xl bg-[#0c0c1e] border border-[rgba(217,70,239,0.2)] p-10 text-center overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-px bg-gradient-to-r from-transparent via-[#D946EF] to-transparent" />
-          <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
-
-          <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(217,70,239,0.3)] bg-[rgba(217,70,239,0.08)] text-[#D946EF] text-[11px] font-medium tracking-widest uppercase mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D946EF] animate-pulse" />
-              More details coming soon
+      {/* ── Mentoring stories ────────────────────────────────────── */}
+      {stories.length > 0 && (
+        <div className="max-w-5xl mx-auto px-6 md:px-12 py-16">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <div className="text-[10px] text-[#D946EF] tracking-[0.22em] uppercase mb-2">// Stories</div>
+              <h2
+                className="text-3xl font-bold text-[#F8FAFC]"
+                style={{ fontFamily: "var(--font-space-grotesk)" }}
+              >
+                From the Mentoring Room
+              </h2>
             </div>
-            <p className="text-[#636876] text-base leading-relaxed max-w-lg mx-auto mb-8">
-              This page is getting a full update soon. In the meantime, if you&apos;d like to
-              connect about mentoring, reach out directly &mdash; I reply to every thoughtful email.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#D946EF] to-[#9B6EFF] text-white font-semibold hover:opacity-90 transition-opacity duration-200"
-            >
-              <Sparkle size={11} />
-              Reach Out &rarr;
-            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {stories.map((story) => (
+              <Link key={story.slug} href={`/mentoring/${story.slug}`} className="group block">
+                <article className="relative h-full rounded-2xl bg-[#0c0c1e] border border-[rgba(217,70,239,0.12)] hover:border-[rgba(217,70,239,0.35)] card-lift-pink p-7 overflow-hidden flex flex-col card-lift">
+                  <div className="flex items-center gap-2.5 mb-4">
+                    <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${getCategoryStyle(story.category)}`}>
+                      {story.category}
+                    </span>
+                    <span className="text-[11px] text-[#636876]">{formatDate(story.date)}</span>
+                  </div>
+
+                  <h3
+                    className="text-xl font-normal leading-snug text-[#F8FAFC] mb-3 group-hover:text-white transition-colors"
+                    style={{ fontFamily: "var(--font-dm-serif)" }}
+                  >
+                    {story.title}
+                  </h3>
+
+                  <p className="text-[#636876] text-sm leading-relaxed flex-1 mb-4">
+                    {story.summary}
+                  </p>
+
+                  <span className="text-[11px] text-[#D946EF] opacity-0 group-hover:opacity-100 transition-opacity">
+                    Read the story &rarr;
+                  </span>
+
+                  <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D946EF] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </article>
+              </Link>
+            ))}
           </div>
         </div>
-      </div>
+      )}
 
       {/* ── How I mentor ────────────────────────────────────────── */}
       <div className="border-t border-[rgba(217,70,239,0.08)] py-16 px-6 md:px-12">
@@ -119,10 +147,7 @@ export default function MentoringPage() {
                 >
                   {v.title}
                 </h3>
-                <p
-                  className="text-[#636876] text-sm leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: v.body }}
-                />
+                <p className="text-[#636876] text-sm leading-relaxed">{v.body}</p>
               </div>
             ))}
           </div>
@@ -148,7 +173,7 @@ export default function MentoringPage() {
             </p>
             <p className="text-[#636876] text-base leading-relaxed">
               I speak on Women in Tech at conferences, I mentor individually, and I&apos;m
-              always looking for more ways to make this industry better — for everyone
+              always looking for more ways to make this industry better &mdash; for everyone
               who currently has to fight to belong in it.
             </p>
           </div>
@@ -177,7 +202,34 @@ export default function MentoringPage() {
         </div>
       </div>
 
-      {/* ── Stickers teaser ──────────────────────────────────────── */}
+      {/* ── Reach out CTA ────────────────────────────────────────── */}
+      <div className="border-t border-[rgba(217,70,239,0.08)] py-16 px-6 md:px-12">
+        <div className="max-w-5xl mx-auto">
+          <div className="relative rounded-2xl bg-[#0c0c1e] border border-[rgba(217,70,239,0.2)] p-10 text-center overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-px bg-gradient-to-r from-transparent via-[#D946EF] to-transparent" />
+            <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(217,70,239,0.3)] bg-[rgba(217,70,239,0.08)] text-[#D946EF] text-[11px] font-medium tracking-widest uppercase mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#D946EF] animate-pulse" />
+                Open for conversations
+              </div>
+              <p className="text-[#636876] text-base leading-relaxed max-w-lg mx-auto mb-8">
+                If you&apos;d like to connect about mentoring, reach out directly.
+                I reply to every thoughtful message.
+              </p>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#D946EF] to-[#9B6EFF] text-white font-semibold hover:opacity-90 transition-opacity duration-200"
+              >
+                <Sparkle size={11} />
+                Reach Out &rarr;
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Sticker archive teaser ───────────────────────────────── */}
       <div className="border-t border-[rgba(217,70,239,0.08)] py-16 px-6 md:px-12">
         <div className="max-w-5xl mx-auto">
           <div className="relative rounded-2xl bg-[#0c0c1e] border border-[rgba(245,158,11,0.2)] p-8 overflow-hidden">

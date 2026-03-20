@@ -1,6 +1,8 @@
-import { sessions, getSessionCategoryStyle, formatSessionDate } from "../data/sessions";
-import { Sparkle } from "../components/Sparkle";
 import Link from "next/link";
+import { getAll } from "@/lib/content";
+import { getTopicStyle } from "@/lib/styles";
+import type { Session } from "@/lib/types";
+import { Sparkle } from "../components/Sparkle";
 
 export const metadata = {
   title: "Sessions — Sandra Kiel",
@@ -8,24 +10,18 @@ export const metadata = {
     "A curated archive of keynotes, workshops, panels, and talks on play, leadership, creativity, and Women in Tech.",
 };
 
-// Group sessions by year
-const byYear = sessions.reduce<Record<number, typeof sessions>>((acc, s) => {
-  (acc[s.year] ??= []).push(s);
-  return acc;
-}, {});
-const years = Object.keys(byYear)
-  .map(Number)
-  .sort((a, b) => b - a);
-
-const categoryEmoji: Record<string, string> = {
+const topicEmoji: Record<string, string> = {
   Keynote:  "🎯",
   Workshop: "⚡",
   Panel:    "💬",
   Podcast:  "🎙",
   Talk:     "✦",
+  Session:  "✦",
 };
 
 export default function SessionsPage() {
+  const sessions = getAll<Session>("sessions");
+
   return (
     <div className="min-h-screen pt-20">
 
@@ -52,12 +48,11 @@ export default function SessionsPage() {
             on play, leadership, creativity, and why the most serious work is often the most playful.
           </p>
 
-          {/* Quick stats */}
-          <div className="flex items-center gap-8 mt-10">
+          <div className="flex items-center flex-wrap gap-x-8 gap-y-4 mt-10">
             {[
               { value: sessions.length + "+", label: "Sessions Listed" },
-              { value: "3",   label: "Countries" },
-              { value: "4",   label: "Format Types" },
+              { value: "8+",  label: "Countries" },
+              { value: "5",   label: "Format Types" },
             ].map((s) => (
               <div key={s.label}>
                 <div
@@ -73,78 +68,42 @@ export default function SessionsPage() {
         </div>
       </div>
 
-      {/* ── Sessions by year ────────────────────────────────────── */}
-      <div className="max-w-5xl mx-auto px-6 md:px-12 py-16 space-y-20">
-        {years.map((year) => (
-          <div key={year}>
+      {/* ── Sessions grid ───────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 md:px-12 py-16">
+        <div className="grid md:grid-cols-2 gap-5">
+          {sessions.map((session) => (
+            <Link
+              key={session.slug}
+              href={`/sessions/${session.slug}`}
+              className="group block"
+            >
+              <article className="relative rounded-2xl bg-[#0c0c1e] border border-[rgba(155,110,255,0.1)] hover:border-[rgba(155,110,255,0.35)] card-lift p-7 overflow-hidden h-full">
+                <div className="flex items-center justify-between gap-4 mb-5">
+                  <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${getTopicStyle(session.topic)}`}>
+                    {topicEmoji[session.topic] ?? "✦"} {session.topic}
+                  </span>
+                </div>
 
-            {/* Year marker */}
-            <div className="flex items-center gap-4 mb-8">
-              <span
-                className="text-5xl font-bold gradient-text leading-none"
-                style={{ fontFamily: "var(--font-space-grotesk)" }}
-              >
-                {year}
-              </span>
-              <div className="flex-1 h-px bg-[rgba(155,110,255,0.15)]" />
-            </div>
-
-            {/* Cards */}
-            <div className="grid md:grid-cols-2 gap-5">
-              {byYear[year].map((session) => (
-                <article
-                  key={session.id}
-                  className="relative rounded-2xl bg-[#0c0c1e] border border-[rgba(155,110,255,0.1)] hover:border-[rgba(155,110,255,0.35)] card-lift p-7 overflow-hidden"
+                <h3
+                  className="text-lg font-bold leading-snug text-[#F8FAFC] mb-3 group-hover:text-white transition-colors"
+                  style={{ fontFamily: "var(--font-space-grotesk)" }}
                 >
-                  {/* Top row */}
-                  <div className="flex items-start justify-between gap-4 mb-5">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${getSessionCategoryStyle(session.category)}`}>
-                        {categoryEmoji[session.category]} {session.category}
-                      </span>
-                      <span className="text-[11px] text-[#636876]">{formatSessionDate(session.date)}</span>
-                    </div>
-                    {session.location && (
-                      <span className="text-[10px] text-[#636876] tracking-wide flex-shrink-0">{session.location}</span>
-                    )}
-                  </div>
+                  {session.title}
+                </h3>
 
-                  {/* Event name */}
-                  <div className="text-[11px] text-[#9B6EFF] font-medium tracking-wide mb-2">
-                    {session.eventUrl ? (
-                      <a
-                        href={session.eventUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-[#D946EF] transition-colors duration-200"
-                      >
-                        {session.event} ↗
-                      </a>
-                    ) : (
-                      session.event
-                    )}
-                  </div>
+                <p className="text-[#636876] text-sm leading-relaxed line-clamp-2 mb-4">
+                  {session.summary}
+                </p>
 
-                  {/* Title */}
-                  <h3
-                    className="text-lg font-bold leading-snug text-[#F8FAFC] mb-3"
-                    style={{ fontFamily: "var(--font-space-grotesk)" }}
-                  >
-                    {session.title}
-                  </h3>
+                <span className="text-[11px] text-[#9B6EFF] opacity-0 group-hover:opacity-100 transition-opacity">
+                  Read more &rarr;
+                </span>
 
-                  {/* Description */}
-                  <p className="text-[#636876] text-sm leading-relaxed">
-                    {session.description}
-                  </p>
-
-                  {/* Bottom accent */}
-                  <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#9B6EFF] to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 group" />
-                </article>
-              ))}
-            </div>
-          </div>
-        ))}
+                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#9B6EFF] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </article>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* ── Book me strip ────────────────────────────────────────── */}

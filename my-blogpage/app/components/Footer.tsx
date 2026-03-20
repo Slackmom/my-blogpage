@@ -45,7 +45,7 @@ export function Footer() {
 
           {/* Socials */}
           <div className="flex items-center gap-5 text-sm text-[#636876]">
-            <a href="#" className="hover:text-[#9B6EFF] transition-colors duration-200">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/sandra-kiel" target="_blank" rel="noopener noreferrer" className="hover:text-[#9B6EFF] transition-colors duration-200">LinkedIn</a>
             <a href="#" className="hover:text-[#D946EF] transition-colors duration-200">Instagram</a>
             <a href="#" className="hover:text-[#2DD4BF] transition-colors duration-200">Twitter/X</a>
           </div>

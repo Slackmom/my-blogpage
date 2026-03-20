@@ -1,24 +1,25 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Sparkle } from "../components/Sparkle";
 
 export const metadata = {
   title: "About — Sandra Kiel",
   description:
-    "Sandra Kiel is a playpreneur, keynote speaker, mentor, and Women in Tech advocate on a mission to prove that play is serious business.",
+    "Sandra Kiel is a Microsoft MVP, Power Platform & M365 specialist, and international conference speaker — making tech adoption genuinely engaging through the power of game design.",
 };
 
 const beliefs = [
   {
-    label: "Play is serious business.",
-    body: "Not a perk, not a reward. A practice. The organizations that stay curious, adaptive, and genuinely good to work in — they protect space for play.",
+    label: "Adoption is a design problem.",
+    body: "Most technology fails not because it doesn't work, but because nobody wants to use it. Good UX design — especially game-inspired UX — is the gap between a rolled-out tool and a used one.",
   },
   {
     label: "Representation isn't a favour.",
     body: "Women in tech deserve spaces that were designed with them in mind, not retrofitted after the fact. I work to build those spaces — and support the women navigating rooms that weren't.",
   },
   {
-    label: "Creativity needs infrastructure.",
-    body: "Inspiration is everywhere. Good ideas are everywhere. What's rare is the system, the culture, and the leadership that lets those ideas become real things.",
+    label: "Play is the mechanism, not the reward.",
+    body: "Game design principles aren't decoration. They're a proven framework for motivation, behavior change, and genuine engagement. That's why they work in Power Apps as well as they work in Duolingo.",
   },
   {
     label: "The best mentors stay curious.",
@@ -44,24 +45,20 @@ export default function AboutPage() {
           <Sparkle size={12} />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+        <div className="relative z-10 max-w-5xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
 
-          {/* Visual / avatar */}
+          {/* Visual / photo */}
           <div className="relative flex justify-center md:justify-start">
             <div className="relative w-72 h-72 md:w-80 md:h-80">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[rgba(155,110,255,0.22)] to-[rgba(217,70,239,0.14)] border border-[rgba(155,110,255,0.22)]" />
-              <div className="absolute inset-[3px] rounded-3xl bg-[#0c0c1e] flex flex-col items-center justify-center gap-4">
-                <div
-                  className="text-7xl font-bold gradient-text leading-none"
-                  style={{ fontFamily: "var(--font-space-grotesk)" }}
-                >
-                  SK
-                </div>
-                <div className="text-[9px] text-[#636876] tracking-[0.3em] uppercase">Sandra Kiel</div>
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-[rgba(244,114,182,0.3)] bg-[rgba(244,114,182,0.08)] text-[#F472B6] text-[10px] font-medium">
-                  <Sparkle size={8} />
-                  Playpreneur
-                </div>
+              <div className="absolute inset-[3px] rounded-3xl overflow-hidden bg-[#0c0c1e]">
+                <Image
+                  src="/images/sandra.jpg"
+                  alt="Sandra Kiel"
+                  fill
+                  className="object-cover rounded-3xl"
+                  priority
+                />
               </div>
               {/* Corner brackets */}
               <div className="absolute -top-2.5 -left-2.5 w-6 h-6 border-l-2 border-t-2 border-[#9B6EFF]" />
@@ -70,11 +67,6 @@ export default function AboutPage() {
               <div className="absolute -bottom-2.5 -right-2.5 w-6 h-6 border-r-2 border-b-2 border-[#2DD4BF]" />
             </div>
 
-            {/* Floating badge */}
-            <div className="absolute -bottom-5 -right-2 md:-right-8 flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#0c0c1e] border border-[rgba(155,110,255,0.3)] text-[11px] shadow-lg">
-              <span className="text-[#F59E0B]">✦</span>
-              <span className="text-[#C4C9D4] font-medium">TEDxAmsterdamWomen</span>
-            </div>
           </div>
 
           {/* Headline */}
@@ -88,11 +80,32 @@ export default function AboutPage() {
               serious stuff<br />
               <span className="gradient-text">feel alive.</span>
             </h1>
-            <p className="text-[#636876] text-lg leading-relaxed">
-              Speaker. Playpreneur. Women in Tech advocate. Mentor.
-              And a person who genuinely believes that how you play is
-              a window into how you lead.
+            <p className="text-[#636876] text-lg leading-relaxed mb-6">
+              Microsoft MVP. International conference speaker. Power Platform &amp; M365 specialist.
+              And the person who keeps asking: what if adoption was actually fun?
             </p>
+
+            {/* Social links */}
+            <div className="flex items-center gap-4 flex-wrap">
+              <a
+                href="https://www.linkedin.com/in/sandra-kiel"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(155,110,255,0.1)] border border-[rgba(155,110,255,0.25)] text-[#9B6EFF] text-sm font-medium hover:bg-[rgba(155,110,255,0.2)] transition-colors duration-200"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+              </a>
+              <a
+                href="https://mvp.microsoft.com/de-de/PublicProfile/5004592"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(45,212,191,0.1)] border border-[rgba(45,212,191,0.25)] text-[#2DD4BF] text-sm font-medium hover:bg-[rgba(45,212,191,0.2)] transition-colors duration-200"
+              >
+                <span className="text-[#F59E0B]">★</span>
+                Microsoft MVP
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -101,30 +114,29 @@ export default function AboutPage() {
       <div className="max-w-3xl mx-auto px-6 md:px-12 py-20">
         <div className="prose-sk">
           <p>
-            I didn&apos;t plan to become a Playpreneur. I planned to build a conventional
-            tech career and be very responsible about it. What happened instead was a
-            series of experiments, accidents, and deeply uncomfortable conversations
-            that eventually turned into a point of view I couldn&apos;t stop talking about:
-            <strong> play is not the opposite of work. It&apos;s the thing that makes work worth doing.</strong>
+            I&apos;m a <strong>Microsoft MVP</strong> specializing in Power Platform and Microsoft 365 — and
+            I&apos;ve spent the last several years obsessed with one question: why do people adopt
+            some tools and ignore others, and what does game design know about that gap that
+            enterprise IT doesn&apos;t?
           </p>
           <p>
-            Over the last twelve-plus years, I&apos;ve keynoted at conferences across Europe,
-            run innovation workshops for teams who thought they didn&apos;t have time to play
-            (they were wrong), and built mentoring relationships with women in tech who
-            were figuring out how to navigate spaces that weren&apos;t designed with them in mind.
-            I&apos;ve given a TEDx talk, appeared on podcasts, and collected enough conference
-            badges to wallpaper a small room.
+            The answer turns out to be: quite a lot. Streaks, progress bars, onboarding flows,
+            celebration moments, contextual hints — these aren&apos;t gimmicks. They&apos;re the
+            mechanisms that make Duolingo the most-used language learning app in the world while
+            most corporate tools get opened once and quietly ignored forever.
+            <strong> I build Power Apps and adoption frameworks that borrow those mechanics.</strong>
           </p>
           <p>
-            My work sits at the intersection of play theory, organizational design, and
-            personal leadership &mdash; with a heavy dose of Women in Tech advocacy woven
-            through all of it. I care about building things that last, cultures that
-            breathe, and rooms that actually include everybody.
+            I&apos;ve spoken at conferences across Europe and beyond — ESPC, Experts Live Europe,
+            CollabDays, Teams Nation, Modern Workplace Conference Paris, and more — on topics
+            ranging from gamification in Power Platform to Microsoft Mesh for neurodiverse teams
+            to GitHub Copilot as a pair programmer for people who think they&apos;re &ldquo;not technical enough.&rdquo;
           </p>
           <p>
-            When I&apos;m not on stage or deep in a workshop, I&apos;m usually writing, mentoring,
-            collecting stickers from conferences I loved, or thinking about the next
-            question that nobody&apos;s quite asking yet.
+            I also mentor women in tech who are figuring out how to navigate spaces that
+            weren&apos;t originally designed with them in mind. And when I&apos;m not on stage or
+            building something, I&apos;m collecting conference stickers and thinking about the
+            next question nobody&apos;s quite asking yet.
           </p>
         </div>
       </div>
@@ -166,10 +178,10 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { value: "100+", label: "Talks & Sessions" },
-              { value: "50k+", label: "People Reached" },
-              { value: "12+",  label: "Years of Play" },
-              { value: "3",    label: "Countries on Stage" },
+              { value: "19+",  label: "Conference Sessions" },
+              { value: "MVP",  label: "Microsoft Award" },
+              { value: "8+",   label: "Countries on Stage" },
+              { value: "2023", label: "Speaking Since" },
             ].map((s) => (
               <div
                 key={s.label}

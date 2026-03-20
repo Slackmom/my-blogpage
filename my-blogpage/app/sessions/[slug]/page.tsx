@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getSlugs, getBySlug, getAll } from "@/lib/content";
-import { getCategoryStyle, formatDate } from "@/lib/styles";
-import type { BlogPost } from "@/lib/types";
+import { getTopicStyle, formatDate } from "@/lib/styles";
+import type { Session } from "@/lib/types";
 import { Sparkle } from "../../components/Sparkle";
 
 export async function generateStaticParams() {
-  return getSlugs("blog").map((slug) => ({ slug }));
+  return getSlugs("sessions").map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -15,62 +15,61 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const slugs = getSlugs("blog");
-  if (!slugs.includes(slug)) return { title: "Post Not Found — Sandra Kiel" };
-  const post = await getBySlug<BlogPost>("blog", slug);
+  const slugs = getSlugs("sessions");
+  if (!slugs.includes(slug)) return { title: "Session Not Found — Sandra Kiel" };
+  const session = await getBySlug<Session>("sessions", slug);
   return {
-    title: `${post.title} — Sandra Kiel`,
-    description: post.summary,
+    title: `${session.title} — Sandra Kiel`,
+    description: session.summary,
   };
 }
 
-export default async function BlogPostPage({
+export default async function SessionDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const slugs = getSlugs("blog");
+  const slugs = getSlugs("sessions");
   if (!slugs.includes(slug)) notFound();
 
-  const post = await getBySlug<BlogPost>("blog", slug);
-  const allPosts = getAll<BlogPost>("blog");
-  const otherPosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
+  const session = await getBySlug<Session>("sessions", slug);
+  const allSessions = getAll<Session>("sessions");
+  const otherSessions = allSessions.filter((s) => s.slug !== slug).slice(0, 3);
 
   return (
     <div className="min-h-screen pt-20">
 
-      {/* ── Article header ──────────────────────────────────────── */}
+      {/* ── Header ──────────────────────────────────────────────── */}
       <div className="relative overflow-hidden border-b border-[rgba(155,110,255,0.08)] py-20 px-6 md:px-12">
-        <div className="absolute top-0 left-0 w-[400px] h-[300px] rounded-full bg-[#9B6EFF] blur-[180px] opacity-[0.08] pointer-events-none" />
+        <div className="absolute top-0 left-0 w-[400px] h-[300px] rounded-full bg-[#9B6EFF] blur-[180px] opacity-[0.07] pointer-events-none" />
         <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl mx-auto">
           <Link
-            href="/blog"
+            href="/sessions"
             className="inline-flex items-center gap-2 text-[#636876] text-sm hover:text-[#9B6EFF] transition-colors duration-200 mb-8"
           >
             <span>&larr;</span>
-            <span>All posts</span>
+            <span>All sessions</span>
           </Link>
 
-          <div className="flex items-center gap-3 mb-6">
-            <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${getCategoryStyle(post.category)}`}>
-              {post.category}
+          <div className="flex items-center gap-3 flex-wrap mb-6">
+            <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${getTopicStyle(session.topic)}`}>
+              {session.topic}
             </span>
-            <span className="text-[11px] text-[#636876]">{formatDate(post.date)}</span>
-            <span className="text-[11px] text-[#636876]">{post.readTime} read</span>
+            <span className="text-[11px] text-[#636876]">{formatDate(session.date)}</span>
           </div>
 
           <h1
-            className="text-4xl md:text-6xl font-normal leading-[1.1] text-[#F8FAFC] mb-6"
-            style={{ fontFamily: "var(--font-dm-serif)" }}
+            className="text-4xl md:text-5xl font-bold leading-tight text-[#F8FAFC] mb-6"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
-            {post.title}
+            {session.title}
           </h1>
 
           <p className="text-xl text-[#636876] leading-relaxed border-l-2 border-[rgba(155,110,255,0.4)] pl-5">
-            {post.summary}
+            {session.summary}
           </p>
 
           <div className="mt-10 flex items-center gap-4 pt-8 border-t border-[rgba(155,110,255,0.08)]">
@@ -90,11 +89,11 @@ export default async function BlogPostPage({
         </div>
       </div>
 
-      {/* ── Article body ────────────────────────────────────────── */}
+      {/* ── Session body ─────────────────────────────────────────── */}
       <article className="max-w-3xl mx-auto px-6 md:px-12 py-16">
         <div
           className="prose-sk"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: session.content }}
         />
 
         <div className="flex items-center justify-center gap-4 mt-16 mb-4">
@@ -103,60 +102,60 @@ export default async function BlogPostPage({
           <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[rgba(155,110,255,0.2)]" />
         </div>
 
+        {/* Book me CTA */}
         <div className="mt-12 rounded-2xl bg-[#0c0c1e] border border-[rgba(155,110,255,0.13)] p-8 text-center">
           <p
             className="text-2xl font-bold text-[#F8FAFC] mb-3"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
-            Want more like this?
+            Want this for your event?
           </p>
           <p className="text-[#636876] text-sm leading-relaxed mb-6 max-w-sm mx-auto">
-            I write about play, leadership, Women in Tech, and building things that matter.
-            More posts below &mdash; or reach out if you want to talk.
+            I keynote, workshop, and facilitate conversations that actually change things.
+            Let&apos;s talk about what would work for your audience.
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <Link
-              href="/blog"
+              href="/sessions"
               className="px-5 py-2.5 rounded-full bg-[rgba(155,110,255,0.12)] border border-[rgba(155,110,255,0.3)] text-[#9B6EFF] text-sm font-semibold hover:bg-[rgba(155,110,255,0.22)] transition-all duration-200"
             >
-              All posts
+              All sessions
             </Link>
             <Link
               href="/contact"
               className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#9B6EFF] to-[#D946EF] text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-200"
             >
-              Get in touch
+              Book a Talk &rarr;
             </Link>
           </div>
         </div>
       </article>
 
-      {/* ── More posts ──────────────────────────────────────────── */}
-      {otherPosts.length > 0 && (
+      {/* ── More sessions ────────────────────────────────────────── */}
+      {otherSessions.length > 0 && (
         <div className="border-t border-[rgba(155,110,255,0.08)] py-16 px-6 md:px-12">
           <div className="max-w-5xl mx-auto">
             <h2
               className="text-2xl font-bold text-[#F8FAFC] mb-8"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
-              More to Read
+              More Sessions
             </h2>
             <div className="grid md:grid-cols-3 gap-5">
-              {otherPosts.map((p) => (
-                <Link key={p.slug} href={`/blog/${p.slug}`} className="group block">
+              {otherSessions.map((s) => (
+                <Link key={s.slug} href={`/sessions/${s.slug}`} className="group block">
                   <article className="h-full rounded-xl bg-[#0c0c1e] border border-[rgba(155,110,255,0.1)] hover:border-[rgba(155,110,255,0.35)] card-lift p-5">
                     <div className="flex items-center gap-2 mb-3">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${getCategoryStyle(p.category)}`}>
-                        {p.category}
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${getTopicStyle(s.topic)}`}>
+                        {s.topic}
                       </span>
                     </div>
                     <h3
-                      className="text-base font-normal leading-snug text-[#C4C9D4] group-hover:text-[#F8FAFC] transition-colors mb-2"
-                      style={{ fontFamily: "var(--font-dm-serif)" }}
+                      className="text-base font-bold leading-snug text-[#C4C9D4] group-hover:text-[#F8FAFC] transition-colors"
+                      style={{ fontFamily: "var(--font-space-grotesk)" }}
                     >
-                      {p.title}
+                      {s.title}
                     </h3>
-                    <span className="text-[10px] text-[#636876]">{p.readTime} read</span>
                   </article>
                 </Link>
               ))}

@@ -132,10 +132,10 @@ export default function ContactPage() {
             </p>
 
             <a
-              href="mailto:hello@sandrakiel.com"
+              href="mailto:sandra.kiel@event-punks.com"
               className="inline-flex items-center gap-2 text-[#9B6EFF] font-semibold text-lg hover:text-[#D946EF] transition-colors duration-200 group mb-8"
             >
-              hello@sandrakiel.com
+              sandra.kiel@event-punks.com
               <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
             </a>
 
@@ -184,7 +184,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <a
-                href="mailto:hello@sandrakiel.com"
+                href="mailto:sandra.kiel@event-punks.com"
                 className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-gradient-to-r from-[#9B6EFF] to-[#D946EF] text-white font-semibold text-sm hover:opacity-90 transition-opacity duration-200"
               >
                 <Sparkle size={11} />
