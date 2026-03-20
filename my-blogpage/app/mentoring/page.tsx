@@ -180,9 +180,9 @@ export default function MentoringPage() {
 
           <div className="space-y-4">
             {[
-              { label: "TEDxAmsterdamWomen speaker", year: "2024" },
-              { label: "Women in Tech Europe panelist", year: "2026" },
-              { label: "Tech Sisters Summit speaker", year: "2024" },
+              { label: "Lorem ipsum dolor sit amet", year: "2024" },
+              { label: "Consectetur adipiscing elit", year: "2026" },
+              { label: "Sed do eiusmod tempor incididunt", year: "2024" },
               { label: "Mentoring relationships active", value: "10+" },
             ].map((item) => (
               <div

@@ -53,7 +53,10 @@ export function Footer() {
 
         {/* Bottom row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-[rgba(155,110,255,0.08)] text-[10px] text-[#636876] tracking-wide">
-          <span>&copy; 2026 Sandra Kiel. All rights reserved.</span>
+          <div className="flex items-center gap-4">
+            <span>&copy; 2026 Sandra Kiel. All rights reserved.</span>
+            <Link href="/impressum" className="hover:text-[#C4C9D4] transition-colors duration-200">Impressum</Link>
+          </div>
           <span className="flex items-center gap-1.5">
             Built with
             <Sparkle size={9} className="text-[#D946EF]" />
