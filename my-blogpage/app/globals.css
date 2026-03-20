@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Design tokens ──────────────────────────────────────────── */
+:root {
+  --bg-deep:     #06060f;
+  --bg-card:     #0c0c1e;
+  --bg-elevated: #111128;
+  --purple:      #9B6EFF;
+  --pink:        #D946EF;
+  --teal:        #2DD4BF;
+  --gold:        #F59E0B;
+  --rose:        #F472B6;
+  --text-primary:   #F8FAFC;
+  --text-secondary: #C4C9D4;
+  --text-muted:     #636876;
+  --border-subtle:  rgba(155, 110, 255, 0.15);
+}
+
+@theme inline {
+  --color-background: var(--bg-deep);
+  --color-foreground: var(--text-primary);
+  --font-sans:  var(--font-geist-sans);
+  --font-mono:  var(--font-geist-mono);
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── Keyframes ──────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-18px) rotate(4deg); }
+  66%       { transform: translateY(-8px) rotate(-3deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 1; }
+}
+
+@keyframes sparkle-spin {
+  0%, 100% { transform: scale(1) rotate(0deg);   opacity: 0.65; }
+  50%       { transform: scale(1.35) rotate(45deg); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes draw-line {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* ── Animation utilities ────────────────────────────────────── */
+.animate-float           { animation: float 7s ease-in-out infinite; }
+.animate-float-delayed   { animation: float 9s ease-in-out infinite; animation-delay: -3s; }
+.animate-float-slow      { animation: float 11s ease-in-out infinite; animation-delay: -6s; }
+.animate-glow            { animation: glow-pulse 4s ease-in-out infinite; }
+.animate-glow-delayed    { animation: glow-pulse 4s ease-in-out infinite; animation-delay: -2s; }
+.animate-sparkle         { animation: sparkle-spin 3.5s ease-in-out infinite; }
+.animate-sparkle-delayed { animation: sparkle-spin 3.5s ease-in-out infinite; animation-delay: -1.2s; }
+.animate-sparkle-slow    { animation: sparkle-spin 5s ease-in-out infinite; animation-delay: -2.5s; }
+.animate-fade-up         { animation: fade-up 0.8s ease-out forwards; }
+
+/* ── Textures ───────────────────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(155, 110, 255, 0.14) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Gradient text ──────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #9B6EFF 0%, #D946EF 50%, #2DD4BF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #9B6EFF 0%, #D946EF 25%, #2DD4BF 55%, #D946EF 75%, #9B6EFF 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 5s linear infinite;
+}
+
+/* ── Card effects ───────────────────────────────────────────── */
+.card-lift {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.25s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 32px rgba(155, 110, 255, 0.18),
+    0 0 64px rgba(217, 70, 239, 0.07);
+}
+
+.card-lift-pink:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 32px rgba(217, 70, 239, 0.2),
+    0 0 64px rgba(155, 110, 255, 0.08);
+}
+
+/* ── Blog / reading prose ───────────────────────────────────── */
+.prose-sk p {
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 1.6rem;
+  font-size: 1.05rem;
+}
+
+.prose-sk h2 {
+  font-family: var(--font-space-grotesk);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+}
+
+.prose-sk h3 {
+  font-family: var(--font-space-grotesk);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+.prose-sk strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.prose-sk blockquote {
+  border-left: 3px solid var(--purple);
+  padding-left: 1.25rem;
+  margin: 2rem 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: rgba(155, 110, 255, 0.35); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(155, 110, 255, 0.6); }
