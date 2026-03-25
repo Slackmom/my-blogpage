@@ -308,8 +308,7 @@ function SessionCard({ session, index, total, isDiscovered, onDiscover }: CardPr
 
   return (
     <div
-      className="relative cursor-pointer select-none group"
-      style={{ perspective: "1200px" }}
+      className="relative cursor-pointer select-none group flip-wrapper"
       onClick={handleFlip}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && handleFlip()}
       role="button" tabIndex={0}
@@ -319,11 +318,11 @@ function SessionCard({ session, index, total, isDiscovered, onDiscover }: CardPr
       <div className="absolute -inset-1 rounded-[18px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{ background: `radial-gradient(ellipse at 50% 50%, ${theme.glow} 0%, transparent 70%)` }} />
 
-      {/* 3D flip container */}
-      <div style={{ transformStyle:"preserve-3d", transform:flipped?"rotateY(180deg)":"rotateY(0deg)", transition:"transform 0.65s cubic-bezier(0.4,0,0.2,1)", aspectRatio:"5/7", position:"relative", width:"100%" }}>
+      {/* 3D flip container — uses CSS classes for iOS-safe preserve-3d */}
+      <div className={`flip-inner${flipped ? " is-flipped" : ""}`} style={{ aspectRatio:"5/7" }}>
 
         {/* ── FRONT: TCG card ─────────────────────────────────── */}
-        <div className="absolute inset-0" style={{ backfaceVisibility:"hidden", WebkitBackfaceVisibility:"hidden" }}>
+        <div className="flip-face">
           {/* Outer gradient border frame */}
           <div className="absolute inset-0 rounded-[14px]" style={{
             padding: "2.5px",
@@ -401,7 +400,7 @@ function SessionCard({ session, index, total, isDiscovered, onDiscover }: CardPr
         </div>
 
         {/* ── BACK ────────────────────────────────────────────── */}
-        <div className="absolute inset-0" style={{ backfaceVisibility:"hidden", WebkitBackfaceVisibility:"hidden", transform:"rotateY(180deg)" }}>
+        <div className="flip-face flip-face-back">
           <div className="absolute inset-0 rounded-[14px]" style={{
             padding: "2.5px",
             background: `linear-gradient(150deg, ${theme.accent}, ${rgba(0.25)}, ${theme.accent})`,
