@@ -260,21 +260,35 @@ function XPBar({ discovered, total }: { discovered: string[]; total: number }) {
   const count = discovered.length;
   const pct   = total === 0 ? 0 : (count / total) * 100;
   return (
-    <div className="max-w-5xl mx-auto px-6 md:px-12 py-3">
-      <div className="flex items-center justify-between gap-4 mb-1.5">
-        <div className="flex items-center gap-2">
-          <Sparkle size={9} className="text-[#9B6EFF]" />
-          <span className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#9B6EFF]">Collection Tracker</span>
+    <div className="max-w-5xl mx-auto px-4 md:px-12 py-2.5 md:py-3">
+      {/* Single compact row */}
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <Sparkle size={8} className="text-[#9B6EFF] flex-shrink-0" />
+          <span className="text-[9px] md:text-[10px] font-bold tracking-[0.16em] uppercase text-[#9B6EFF] truncate">
+            Collection
+          </span>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] text-[#F59E0B] font-black font-mono">{count * XP_PER_CARD} XP</span>
-          <span className="text-[10px] text-[#636876] font-mono">{count} / {total} collected</span>
+        <div className="flex items-center gap-2.5 flex-shrink-0">
+          <span className="text-[11px] text-[#F59E0B] font-black font-mono leading-none">
+            {count * XP_PER_CARD}<span className="text-[8px] ml-0.5 font-bold">XP</span>
+          </span>
+          <span className="text-[9px] text-[#636876] font-mono">{count}&thinsp;/&thinsp;{total}</span>
         </div>
       </div>
-      <div className="relative h-1.5 rounded-full bg-[rgba(255,255,255,0.06)] overflow-hidden">
-        <div className="h-full rounded-full transition-all duration-700 ease-out" style={{ width:`${pct}%`, background:"linear-gradient(90deg,#9B6EFF 0%,#D946EF 50%,#2DD4BF 100%)", boxShadow:pct>0?"0 0 8px rgba(155,110,255,0.6)":"none" }} />
+      {/* Progress bar — slightly taller on mobile for visibility */}
+      <div className="relative h-2 md:h-1.5 rounded-full bg-[rgba(255,255,255,0.07)] overflow-hidden">
+        <div
+          className="h-full rounded-full transition-all duration-700 ease-out"
+          style={{
+            width: `${pct}%`,
+            background: "linear-gradient(90deg,#9B6EFF 0%,#D946EF 50%,#2DD4BF 100%)",
+            boxShadow: pct > 0 ? "0 0 6px rgba(155,110,255,0.5)" : "none",
+          }}
+        />
       </div>
-      <p className="text-[10px] text-[#636876] mt-1.5 tracking-wide">{xpLabel(count, total)}</p>
+      {/* Milestone label */}
+      <p className="text-[9px] text-[#636876] mt-1.5 tracking-wide leading-none">{xpLabel(count, total)}</p>
     </div>
   );
 }
@@ -314,72 +328,89 @@ function SessionCard({ session, index, total, isDiscovered, onDiscover }: CardPr
       role="button" tabIndex={0}
       aria-label={`${session.title} — press to flip`}
     >
-      {/* Outer hover glow */}
-      <div className="absolute -inset-1 rounded-[18px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+      {/* Outer hover glow — desktop only */}
+      <div className="absolute -inset-1 rounded-[18px] hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{ background: `radial-gradient(ellipse at 50% 50%, ${theme.glow} 0%, transparent 70%)` }} />
 
-      {/* 3D flip container — uses CSS classes for iOS-safe preserve-3d */}
+      {/* 3D flip container */}
       <div className={`flip-inner${flipped ? " is-flipped" : ""}`} style={{ aspectRatio:"5/7" }}>
 
-        {/* ── FRONT: TCG card ─────────────────────────────────── */}
+        {/* ── FRONT ───────────────────────────────────────────── */}
         <div className="flip-face">
-          {/* Outer gradient border frame */}
-          <div className="absolute inset-0 rounded-[14px]" style={{
-            padding: "2.5px",
-            background: `linear-gradient(150deg, ${theme.accent}, ${rgba(0.25)}, ${theme.accent})`,
-            boxShadow: `0 0 28px ${theme.glow}, 0 8px 40px rgba(0,0,0,0.7)`,
+          <div className="absolute inset-0 rounded-[12px] md:rounded-[14px]" style={{
+            padding: "2px",
+            background: `linear-gradient(150deg, ${theme.accent}, ${rgba(0.22)}, ${theme.accent})`,
+            boxShadow: `0 0 18px ${theme.glow}, 0 4px 24px rgba(0,0,0,0.65)`,
           }}>
-            <div className="relative rounded-[12px] overflow-hidden h-full" style={{ background: theme.bg }}>
+            <div className="relative rounded-[10px] md:rounded-[12px] overflow-hidden h-full" style={{ background: theme.bg }}>
 
               {/* Inner frame accent line */}
-              <div className="absolute inset-[3px] rounded-[10px] pointer-events-none z-20" style={{ border:`1px solid ${rgba(0.2)}` }} />
+              <div className="absolute inset-[3px] rounded-[8px] md:rounded-[10px] pointer-events-none z-20"
+                style={{ border:`1px solid ${rgba(0.16)}` }} />
 
-              {/* ── ART ZONE: 60% ──────────────────────────────── */}
-              <div className="relative overflow-hidden" style={{ height:"60%" }}>
+              {/* ── ART ZONE ───────────────────────────────────────
+                  Mobile:  65% — bigger art, cleaner impression
+                  Desktop: 60% — standard TCG proportions          */}
+              <div className="relative overflow-hidden h-[65%] md:h-[60%]">
                 <div className="absolute inset-0" style={{ background: theme.artBg }} />
                 <div className="absolute inset-0"><CardArtwork theme={theme} /></div>
 
-                {/* Holographic shimmer */}
-                <div className="absolute inset-0 holo-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                {/* Holographic shimmer — desktop only for performance */}
+                <div className="absolute inset-0 holo-shimmer hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                {/* Bottom fade blending into name strip */}
-                <div className="absolute bottom-0 left-0 right-0 h-14 pointer-events-none"
+                {/* Bottom fade into name strip */}
+                <div className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none"
                   style={{ background:"linear-gradient(to bottom, transparent, #04040f)" }} />
 
-                {/* Top stat overlay */}
-                <div className="absolute top-0 left-0 right-0 flex items-start justify-between px-2.5 pt-2.5 z-10">
-                  {/* Topic gem (like TCG cost) */}
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center font-black text-[10px]"
-                    style={{ background:`linear-gradient(135deg,${theme.accent},${rgba(0.65)})`, boxShadow:`0 0 10px ${theme.glow}`, color:"#06060f" }}>
-                    {session.topic[0]}
+                {/* Stat bar — simplified on mobile: gem + card# only */}
+                <div className="absolute top-0 left-0 right-0 flex items-start justify-between px-2 pt-2 z-10">
+                  {/* Topic gem — shows ✦ when collected */}
+                  <div className="w-6 h-6 md:w-7 md:h-7 rounded-full flex-shrink-0 flex items-center justify-center font-black text-[9px] md:text-[10px]"
+                    style={{ background:`linear-gradient(135deg,${theme.accent},${rgba(0.6)})`, boxShadow:`0 0 8px ${theme.glow}`, color:"#06060f" }}>
+                    {isDiscovered ? "✦" : session.topic[0]}
                   </div>
-                  {/* Card number badge */}
-                  <div className="text-[7.5px] font-mono font-bold tracking-wider px-1.5 py-0.5 rounded"
-                    style={{ background:"rgba(4,4,15,0.75)", color:theme.accent, border:`1px solid ${rgba(0.3)}` }}>
-                    {cardNum}/{totalNum}
+                  {/* Card number — subtle */}
+                  <div className="text-[7px] font-mono font-bold tracking-wider px-1 py-0.5 rounded"
+                    style={{ background:"rgba(4,4,15,0.72)", color:rgba(0.55), border:`1px solid ${rgba(0.18)}` }}>
+                    {cardNum}
                   </div>
                 </div>
-
-                {/* COLLECTED badge */}
-                {isDiscovered && (
-                  <div className="absolute top-10 right-2 z-10 px-1.5 py-0.5 rounded text-[6.5px] font-bold tracking-widest"
-                    style={{ background:rgba(0.18), color:theme.accent, border:`1px solid ${rgba(0.4)}` }}>
-                    ✦ COLLECTED
-                  </div>
-                )}
               </div>
 
-              {/* ── NAME STRIP: 18% ────────────────────────────── */}
-              <div className="px-2.5 flex flex-col justify-center" style={{ height:"18%", background:"rgba(2,2,12,0.85)", borderTop:`1px solid ${rgba(0.28)}`, borderBottom:`1px solid ${rgba(0.1)}` }}>
-                <div className="text-[6.5px] font-bold tracking-[0.22em] uppercase mb-0.5" style={{ color:theme.accent }}>{theme.label}</div>
-                <h3 className="text-[10px] md:text-[11px] font-black leading-tight text-white line-clamp-2" style={{ fontFamily:"var(--font-space-grotesk)" }}>
+              {/* ── NAME STRIP ─────────────────────────────────────
+                  Mobile:  35% — roomy, title is the hero
+                  Desktop: 18% — compact TCG style               */}
+              <div className="px-3 md:px-2.5 flex flex-col justify-center h-[35%] md:h-[18%]"
+                style={{ background:"rgba(2,2,12,0.9)", borderTop:`1px solid ${rgba(0.25)}` }}>
+                {/* Theme label */}
+                <div className="text-[7px] md:text-[6.5px] font-bold tracking-[0.2em] uppercase mb-1 md:mb-0.5"
+                  style={{ color:theme.accent }}>
+                  {theme.label}
+                </div>
+                {/* Session title */}
+                <h3 className="text-[11px] md:text-[10px] font-black leading-tight text-white line-clamp-2"
+                  style={{ fontFamily:"var(--font-space-grotesk)" }}>
                   {session.title}
                 </h3>
+                {/* Mobile-only bottom row: first tag + state hint */}
+                <div className="flex items-center justify-between mt-2 md:hidden">
+                  {session.tags[0] && (
+                    <span className="text-[7px] px-1.5 py-0.5 rounded font-medium leading-none"
+                      style={{ background:rgba(0.12), color:theme.accent, border:`1px solid ${rgba(0.22)}` }}>
+                      {session.tags[0]}
+                    </span>
+                  )}
+                  <span className="text-[8px] ml-auto" style={{ color:rgba(0.45) }}>
+                    {isDiscovered ? "✦" : "tap →"}
+                  </span>
+                </div>
               </div>
 
-              {/* ── EFFECT PANEL: 22% ──────────────────────────── */}
-              <div className="px-2.5 py-2 flex flex-col justify-between" style={{ height:"22%", background:"rgba(6,6,15,0.9)" }}>
-                <p className="text-[7.5px] leading-relaxed line-clamp-2" style={{ color:"rgba(196,201,212,0.65)" }}>
+              {/* ── EFFECT PANEL — desktop only ──────────────────── */}
+              <div className="hidden md:flex px-2.5 py-2 flex-col justify-between h-[22%]"
+                style={{ background:"rgba(6,6,15,0.9)" }}>
+                <p className="text-[7.5px] leading-relaxed line-clamp-2"
+                  style={{ color:"rgba(196,201,212,0.65)" }}>
                   {session.summary}
                 </p>
                 <div className="flex items-center justify-between mt-1">
@@ -391,7 +422,9 @@ function SessionCard({ session, index, total, isDiscovered, onDiscover }: CardPr
                       </span>
                     ))}
                   </div>
-                  <span className="text-[7px] font-mono" style={{ color:rgba(0.4) }}>{isDiscovered?"✦":"?"}</span>
+                  <span className="text-[7px] font-mono" style={{ color:rgba(0.4) }}>
+                    {isDiscovered ? "✦" : "?"}
+                  </span>
                 </div>
               </div>
 
@@ -401,42 +434,65 @@ function SessionCard({ session, index, total, isDiscovered, onDiscover }: CardPr
 
         {/* ── BACK ────────────────────────────────────────────── */}
         <div className="flip-face flip-face-back">
-          <div className="absolute inset-0 rounded-[14px]" style={{
-            padding: "2.5px",
-            background: `linear-gradient(150deg, ${theme.accent}, ${rgba(0.25)}, ${theme.accent})`,
-            boxShadow: `0 0 28px ${theme.glow}, 0 8px 40px rgba(0,0,0,0.7)`,
+          <div className="absolute inset-0 rounded-[12px] md:rounded-[14px]" style={{
+            padding: "2px",
+            background: `linear-gradient(150deg, ${theme.accent}, ${rgba(0.22)}, ${theme.accent})`,
+            boxShadow: `0 0 18px ${theme.glow}, 0 4px 24px rgba(0,0,0,0.65)`,
           }}>
-            <div className="relative rounded-[12px] overflow-hidden h-full" style={{ background: theme.bg }}>
-              <div className="absolute inset-0 pointer-events-none" style={{ background:`radial-gradient(ellipse 90% 45% at 50% 0%, ${theme.glow} 0%, transparent 60%)` }} />
-              <div className="absolute inset-[3px] rounded-[10px] pointer-events-none z-10" style={{ border:`1px solid ${rgba(0.22)}` }} />
+            <div className="relative rounded-[10px] md:rounded-[12px] overflow-hidden h-full" style={{ background: theme.bg }}>
+              {/* Top glow */}
+              <div className="absolute inset-0 pointer-events-none"
+                style={{ background:`radial-gradient(ellipse 90% 45% at 50% 0%, ${theme.glow} 0%, transparent 60%)` }} />
+              {/* Inner frame */}
+              <div className="absolute inset-[3px] rounded-[8px] md:rounded-[10px] pointer-events-none z-10"
+                style={{ border:`1px solid ${rgba(0.2)}` }} />
 
-              <div className="relative z-10 h-full flex flex-col p-3.5">
-                <div className="flex items-center justify-between mb-2">
-                  <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-widest ${getTopicStyle(session.topic)}`}>{session.topic}</span>
-                  <span className="text-[8px] font-mono" style={{ color:rgba(0.45) }}>{cardNum}/{totalNum}</span>
+              <div className="relative z-10 h-full flex flex-col p-4 md:p-3.5">
+
+                {/* Header row */}
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className={`px-2 py-1 md:px-1.5 md:py-0.5 rounded-full text-[8.5px] md:text-[8px] font-bold uppercase tracking-wider ${getTopicStyle(session.topic)}`}>
+                    {session.topic}
+                  </span>
+                  <span className="text-[7.5px] font-mono opacity-40" style={{ color:theme.accent }}>
+                    {cardNum}
+                  </span>
                 </div>
-                <div className="mb-2" style={{ height:"1px", background:`linear-gradient(90deg,${theme.accent}70,transparent)` }} />
-                <h3 className="text-[12px] font-black leading-snug text-white mb-2" style={{ fontFamily:"var(--font-space-grotesk)" }}>
+
+                {/* Accent divider */}
+                <div className="mb-3" style={{ height:"1px", background:`linear-gradient(90deg,${theme.accent}70,transparent)` }} />
+
+                {/* Title — larger on mobile for readability */}
+                <h3 className="text-[13px] md:text-[12px] font-black leading-snug text-white mb-2.5"
+                  style={{ fontFamily:"var(--font-space-grotesk)" }}>
                   {session.title}
                 </h3>
-                <p className="text-[9.5px] leading-relaxed line-clamp-5 mb-3 flex-grow" style={{ color:"rgba(196,201,212,0.62)" }}>
+
+                {/* Summary — 3 lines on mobile, 5 on desktop */}
+                <p className="text-[10px] md:text-[9.5px] leading-relaxed line-clamp-3 md:line-clamp-5 mb-3 flex-grow"
+                  style={{ color:"rgba(196,201,212,0.65)" }}>
                   {session.summary}
                 </p>
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {session.tags.slice(0,3).map(tag=>(
-                    <span key={tag} className="text-[7.5px] px-1.5 py-0.5 rounded font-medium"
+
+                {/* Tags — 2 max, bigger touch-friendly pills on mobile */}
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {session.tags.slice(0,2).map(tag=>(
+                    <span key={tag} className="text-[8px] md:text-[7.5px] px-2 md:px-1.5 py-1 md:py-0.5 rounded font-medium"
                       style={{ background:rgba(0.12), color:theme.accent, border:`1px solid ${rgba(0.28)}` }}>
                       {tag}
                     </span>
                   ))}
                 </div>
-                <Link href={`/sessions/${session.slug}`}
-                  className="block text-center py-2.5 rounded-xl text-[10px] font-black tracking-wide transition-all duration-200 hover:brightness-110 active:scale-95"
+
+                {/* CTA — py-3 on mobile for generous touch target */}
+                <Link
+                  href={`/sessions/${session.slug}`}
+                  className="block text-center py-3 md:py-2.5 rounded-xl text-[11px] font-black tracking-wide transition-all duration-200 hover:brightness-110 active:scale-95"
                   style={{ background:`linear-gradient(135deg,${rgba(0.25)},${rgba(0.12)})`, border:`1px solid ${rgba(0.5)}`, color:theme.accent }}
                   onClick={e=>e.stopPropagation()}>
                   View Full Session &rarr;
                 </Link>
-                <p className="text-center text-[7px] mt-1.5 tracking-wider" style={{ color:"rgba(255,255,255,0.18)" }}>TAP TO FLIP BACK</p>
+
               </div>
             </div>
           </div>
@@ -474,8 +530,8 @@ export default function SessionsGallery({ sessions }: { sessions: Session[] }) {
       <div className="sticky top-[65px] z-40 border-b border-[rgba(155,110,255,0.1)] bg-[rgba(6,6,15,0.9)] backdrop-blur-md">
         <XPBar discovered={discovered} total={sessions.length} />
       </div>
-      <div className="max-w-5xl mx-auto px-5 md:px-12 py-14">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-7">
+      <div className="max-w-5xl mx-auto px-4 md:px-12 py-10 md:py-14">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-7">
           {sessions.map((session, i) => (
             <SessionCard key={session.slug} session={session} index={i} total={sessions.length}
               isDiscovered={discovered.includes(session.slug)} onDiscover={handleDiscover} />
