@@ -1,22 +1,13 @@
 import Link from "next/link";
 import { getAll } from "@/lib/content";
-import { getTopicStyle } from "@/lib/styles";
 import type { Session } from "@/lib/types";
 import { Sparkle } from "../components/Sparkle";
+import SessionsGallery from "./SessionsGallery";
 
 export const metadata = {
   title: "Sessions — Sandra Kiel",
   description:
-    "A curated archive of keynotes, workshops, panels, and talks on play, leadership, creativity, and Women in Tech.",
-};
-
-const topicEmoji: Record<string, string> = {
-  Keynote:  "🎯",
-  Workshop: "⚡",
-  Panel:    "💬",
-  Podcast:  "🎙",
-  Talk:     "✦",
-  Session:  "✦",
+    "A collectible card archive of keynotes, workshops, panels, and talks on play, leadership, creativity, and Women in Tech. Flip a card to discover each session.",
 };
 
 export default function SessionsPage() {
@@ -34,7 +25,7 @@ export default function SessionsPage() {
         <div className="relative z-10 max-w-5xl mx-auto">
           <div className="flex items-center gap-2 text-[#9B6EFF] mb-5">
             <Sparkle size={12} />
-            <span className="text-[10px] tracking-[0.22em] uppercase font-medium">Sessions</span>
+            <span className="text-[10px] tracking-[0.22em] uppercase font-medium">Speaker Card Collection</span>
           </div>
           <h1
             className="text-5xl md:text-7xl font-bold text-[#F8FAFC] mb-5 leading-tight"
@@ -44,8 +35,9 @@ export default function SessionsPage() {
             <span className="gradient-text">In the Room</span>
           </h1>
           <p className="max-w-xl text-[#636876] text-lg leading-relaxed">
-            A curated archive of keynotes, workshops, panels, and conversations &mdash;
-            on play, leadership, creativity, and why the most serious work is often the most playful.
+            Every session is a collectible. Flip the cards to discover what&rsquo;s inside &mdash;
+            keynotes, workshops, and conversations on play, leadership, and the serious work of
+            making things stick.
           </p>
 
           <div className="flex items-center flex-wrap gap-x-8 gap-y-4 mt-10">
@@ -68,43 +60,8 @@ export default function SessionsPage() {
         </div>
       </div>
 
-      {/* ── Sessions grid ───────────────────────────────────────── */}
-      <div className="max-w-5xl mx-auto px-6 md:px-12 py-16">
-        <div className="grid md:grid-cols-2 gap-5">
-          {sessions.map((session) => (
-            <Link
-              key={session.slug}
-              href={`/sessions/${session.slug}`}
-              className="group block"
-            >
-              <article className="relative rounded-2xl bg-[#0c0c1e] border border-[rgba(155,110,255,0.1)] hover:border-[rgba(155,110,255,0.35)] card-lift p-7 overflow-hidden h-full">
-                <div className="flex items-center justify-between gap-4 mb-5">
-                  <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${getTopicStyle(session.topic)}`}>
-                    {topicEmoji[session.topic] ?? "✦"} {session.topic}
-                  </span>
-                </div>
-
-                <h3
-                  className="text-lg font-bold leading-snug text-[#F8FAFC] mb-3 group-hover:text-white transition-colors"
-                  style={{ fontFamily: "var(--font-space-grotesk)" }}
-                >
-                  {session.title}
-                </h3>
-
-                <p className="text-[#636876] text-sm leading-relaxed line-clamp-2 mb-4">
-                  {session.summary}
-                </p>
-
-                <span className="text-[11px] text-[#9B6EFF] opacity-0 group-hover:opacity-100 transition-opacity">
-                  Read more &rarr;
-                </span>
-
-                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#9B6EFF] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </article>
-            </Link>
-          ))}
-        </div>
-      </div>
+      {/* ── Collectible card gallery (client) ───────────────────── */}
+      <SessionsGallery sessions={sessions} />
 
       {/* ── Book me strip ────────────────────────────────────────── */}
       <div className="border-t border-[rgba(155,110,255,0.08)] py-16 px-6 md:px-12">
@@ -126,7 +83,7 @@ export default function SessionsPage() {
             href="/contact"
             className="flex-shrink-0 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#9B6EFF] to-[#D946EF] text-white font-semibold hover:opacity-90 transition-opacity duration-200 whitespace-nowrap"
           >
-            Book a Talk &rarr;
+            Book a Call &rarr;
           </Link>
         </div>
       </div>

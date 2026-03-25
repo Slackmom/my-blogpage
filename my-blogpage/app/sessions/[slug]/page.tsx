@@ -125,7 +125,7 @@ export default async function SessionDetailPage({
               href="/contact"
               className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#9B6EFF] to-[#D946EF] text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-200"
             >
-              Book a Talk &rarr;
+              Book a Call &rarr;
             </Link>
           </div>
         </div>

@@ -70,7 +70,7 @@ export default function Home() {
               href="/contact"
               className="px-8 py-4 rounded-full bg-gradient-to-r from-[#9B6EFF] to-[#D946EF] text-white font-semibold text-base hover:opacity-90 transition-opacity duration-200 hover:shadow-[0_0_48px_rgba(155,110,255,0.45)] active:scale-95"
             >
-              Book a Talk &rarr;
+              Book a Call &rarr;
             </Link>
             <Link
               href="/blog"

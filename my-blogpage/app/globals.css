@@ -119,6 +119,54 @@ body {
     0 0 64px rgba(155, 110, 255, 0.08);
 }
 
+/* ── Collectible Card System ────────────────────────────────── */
+@keyframes holo-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.holo-shimmer {
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(155, 110, 255, 0.14) 18%,
+    rgba(45, 212, 191, 0.10) 32%,
+    rgba(217, 70, 239, 0.13) 47%,
+    rgba(244, 114, 182, 0.10) 62%,
+    rgba(245, 158, 11, 0.08) 77%,
+    transparent 100%
+  );
+  background-size: 300% 300%;
+  animation: holo-shift 3.5s ease-in-out infinite;
+}
+
+@keyframes xp-float-up {
+  0%   { transform: translateY(0)   scale(0.7); opacity: 1; }
+  60%  { transform: translateY(-36px) scale(1.15); opacity: 1; }
+  100% { transform: translateY(-60px) scale(1);   opacity: 0; }
+}
+.xp-burst {
+  animation: xp-float-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes xp-bar-grow {
+  from { width: 0%; }
+}
+.xp-bar-fill {
+  animation: xp-bar-grow 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes card-discovered-pulse {
+  0%   { box-shadow: 0 0 0 0 var(--card-accent-glow); }
+  60%  { box-shadow: 0 0 0 12px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.card-discovered {
+  animation: card-discovered-pulse 0.7s ease-out forwards;
+}
+
 /* ── Blog / reading prose ───────────────────────────────────── */
 .prose-sk p {
   color: var(--text-secondary);
