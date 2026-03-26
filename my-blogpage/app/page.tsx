@@ -3,6 +3,7 @@ import { getAll } from "@/lib/content";
 import { getCategoryStyle, getTopicStyle, formatDate, formatShortDate } from "@/lib/styles";
 import type { BlogPost, Session, MentoringStory } from "@/lib/types";
 import { Sparkle } from "./components/Sparkle";
+import MemoryGame from "./components/MemoryGame";
 
 export default function Home() {
   const posts = getAll<BlogPost>("blog");
@@ -104,6 +105,11 @@ export default function Home() {
           <div className="w-px h-10 bg-gradient-to-b from-[#636876] to-transparent" />
         </div>
       </section>
+
+      {/* ═══════════════════════════════════════════════════════════
+          MEMORY GAME
+      ═══════════════════════════════════════════════════════════ */}
+      <MemoryGame />
 
       {/* ═══════════════════════════════════════════════════════════
           LATEST POSTS
